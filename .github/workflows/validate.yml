@@ -15,10 +15,25 @@ jobs:
       - uses: actions/checkout@v4
       - uses: home-assistant/actions/hassfest@master
   tests:
+    # інтеграція в живому Home Assistant — три останні версії (pytest-homeassistant-custom-component закріплює
+    # точну версію HA; при новому релізі HA додати рядок, найстаріший прибрати — див. README «Сумісність»)
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ha: "2026.7"
+            harness: "0.13.348"
+          - ha: "2026.8"
+            harness: "0.13.357"
+          - ha: "2026.9"
+            harness: "0.13.367"
+    name: tests (Home Assistant ${{ matrix.ha }})
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
-      - run: python -m unittest tests.test_hacomponent
+          python-version: "3.14"
+      - run: pip install "pytest-homeassistant-custom-component==${{ matrix.harness }}"
+      - run: python -c "import homeassistant.const as c; print('Home Assistant', c.__version__)"
+      - run: python -m pytest -q
