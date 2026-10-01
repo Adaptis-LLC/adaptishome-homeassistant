@@ -1,19 +1,49 @@
 """AdaptisHome — резервування інтернету Adaptis: стан об'єктів і каналів з хаба в Home Assistant."""
 from __future__ import annotations
 
+import logging
+import os
+
+from homeassistant.components.http import StaticPathConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.typing import ConfigType
 
 from .api import AdaptisHomeApi, AuthError, HubError
-from .const import CONF_HUB, CONF_OBJECTS
+from .const import CARD_URL, CONF_HUB, CONF_OBJECTS, DOMAIN, VERSION
 from .coordinator import AdaptisHomeCoordinator
 
+_LOGGER = logging.getLogger(__name__)
 PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.EVENT]
 
 type AdaptisHomeEntry = ConfigEntry[AdaptisHomeCoordinator]
+
+
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Картка для дашборду: файл віддається з інтеграції і сам додається в ресурси Lovelace (режим «storage»)."""
+    await hass.http.async_register_static_paths([StaticPathConfig(CARD_URL, os.path.join(os.path.dirname(__file__), "frontend", "adaptishome-card.js"), True)])
+    hass.async_create_task(_register_card(hass))
+    return True
+
+
+async def _register_card(hass: HomeAssistant) -> None:
+    lovelace = hass.data.get("lovelace")
+    resources = getattr(lovelace, "resources", None)
+    if resources is None or not hasattr(resources, "async_create_item"):   # YAML-режим: ресурс додають руками, див. README
+        return
+    try:
+        if not getattr(resources, "loaded", True): await resources.async_load()
+        url = f"{CARD_URL}?v={VERSION}"
+        for item in resources.async_items():
+            if item["url"].startswith(CARD_URL):
+                if item["url"] != url: await resources.async_update_item(item["id"], {"url": url})   # нова версія — новий кеш
+                return
+        await resources.async_create_item({"res_type": "module", "url": url})
+    except Exception as e:   # noqa: BLE001 — картка не має валити інтеграцію
+        _LOGGER.warning("Не вдалося додати картку в ресурси Lovelace: %s", e)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: AdaptisHomeEntry) -> bool:

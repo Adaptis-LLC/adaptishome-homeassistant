@@ -47,6 +47,13 @@ class AdaptisHomeChannelEntity(AdaptisHomeEntity):
         return next((c for c in self.snap.get("channels", []) if c["id"] == self.ch_id), {})
 
     @property
+    def extra_state_attributes(self) -> dict:
+        """Картка (frontend/adaptishome-card.js) знаходить сутності каналу за цими атрибутами, а не за назвою."""
+        chans = [c["id"] for c in self.snap.get("channels", [])]
+        return {"channel": self.ch_id, "channel_name": self.channel.get("name"),
+                "priority": chans.index(self.ch_id) + 1 if self.ch_id in chans else None}
+
+    @property
     def translation_placeholders(self) -> dict[str, str]:
         return {"channel": self.channel.get("name") or self.ch_id}
 

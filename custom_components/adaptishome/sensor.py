@@ -87,9 +87,10 @@ class ObjectSensor(AdaptisHomeEntity, SensorEntity):
     @property
     def extra_state_attributes(self):
         if self.entity_description.key != "status": return None
-        s, d = self.snap, self.snap.get("device") or {}
+        s, d, u = self.snap, self.snap.get("device") or {}, self.snap.get("uptime30") or {}
         return {"last_seen": s.get("last_seen"), "primary": s.get("primary"), "serial": d.get("serial"), "model": d.get("model"),
-                "config_version": d.get("config_version")}
+                "config_version": d.get("config_version"), "uptime30_total_pct": u.get("total_pct"),
+                "uptime30_primary_pct": u.get("primary_pct"), "uptime30_saved_s": u.get("saved_s"), "saves30": u.get("saves")}
 
 
 class ChannelSensor(AdaptisHomeChannelEntity, SensorEntity):
@@ -105,6 +106,7 @@ class ChannelSensor(AdaptisHomeChannelEntity, SensorEntity):
 
     @property
     def extra_state_attributes(self):
-        if self.entity_description.key != "state": return None
+        base = super().extra_state_attributes
+        if self.entity_description.key != "state": return base
         c = self.channel
-        return {"kind": c.get("kind"), "desc": c.get("desc"), "down_since": c.get("down_since"), "avail_24h": c.get("avail")}
+        return {**base, "kind": c.get("kind"), "desc": c.get("desc"), "down_since": c.get("down_since"), "avail_24h": c.get("avail")}

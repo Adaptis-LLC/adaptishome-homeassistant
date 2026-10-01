@@ -36,6 +36,14 @@ class HaComponentTest(unittest.TestCase):
         self.assertEqual(set(re.search(r'_attr_event_types = \[([^\]]+)\]', src("event.py"))[1].replace('"', "").replace(" ", "").split(",")),
                          set(en["entity"]["event"]["event"]["state_attributes"]["event_type"]["state"]))
 
+    def test_card(self):
+        m = json.load(open(os.path.join(D, "manifest.json")))
+        self.assertIn(f'VERSION = "{m["version"]}"', src("const.py"))
+        card = src(os.path.join("frontend", "adaptishome-card.js"))
+        self.assertIn("customElements.define('adaptishome-card'", card)
+        self.assertIn("customElements.define('adaptishome-card-editor'", card)
+        self.assertIn("/adaptishome/adaptishome-card.js", src("const.py"))
+
     def test_api_uses_only_documented_endpoints(self):
         self.assertEqual(set(re.findall(r'/api/[a-z_/]+', src("api.py"))), {"/api/login", "/api/devices", "/api/device"})
 
