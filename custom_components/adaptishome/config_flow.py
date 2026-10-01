@@ -11,10 +11,9 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.selector import SelectOptionDict, SelectSelector, SelectSelectorConfig, SelectSelectorMode
 
 from .api import AdaptisHomeApi, AuthError, HubError
-from .const import CONF_HUB, CONF_OBJECTS, DOMAIN
+from .const import CONF_HUB, CONF_OBJECTS, DOMAIN, HUB
 
 STEP_USER = vol.Schema({
-    vol.Required(CONF_HUB): str,
     vol.Required(CONF_USERNAME): str,
     vol.Required(CONF_PASSWORD): str,
 })
@@ -27,7 +26,7 @@ def _objects_schema(devices: list[dict], chosen: list[str]) -> vol.Schema:
 
 
 async def _check(hass, data: dict) -> tuple[AdaptisHomeApi, list[dict]]:
-    api = AdaptisHomeApi(async_get_clientsession(hass), data[CONF_HUB].strip(), data[CONF_USERNAME].strip(), data[CONF_PASSWORD])
+    api = AdaptisHomeApi(async_get_clientsession(hass), data.get(CONF_HUB) or HUB, data[CONF_USERNAME].strip(), data[CONF_PASSWORD])
     await api.login()
     return api, await api.devices()
 
@@ -49,7 +48,7 @@ class AdaptisHomeConfigFlow(ConfigFlow, domain=DOMAIN):
             except HubError:
                 errors["base"] = "cannot_connect"
             else:
-                hub, login = user_input[CONF_HUB].strip().rstrip("/"), user_input[CONF_USERNAME].strip()
+                hub, login = HUB, user_input[CONF_USERNAME].strip()
                 await self.async_set_unique_id(f"{hub}|{login}".lower())
                 self._abort_if_unique_id_configured()
                 self._data = {CONF_HUB: hub, CONF_USERNAME: login, CONF_PASSWORD: user_input[CONF_PASSWORD], "name": api.name}

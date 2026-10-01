@@ -2,10 +2,9 @@
   "config": {
     "step": {
       "user": {
-        "title": "Хаб AdaptisHome",
-        "description": "Адреса хаба — та, за якою відкривається панель AdaptisHome (її дає Adaptis); логін і пароль ті самі, що в панелі.",
+        "title": "AdaptisHome",
+        "description": "Логін і пароль ті самі, що в панелі AdaptisHome.",
         "data": {
-          "hub": "Адреса хаба",
           "username": "Пошта або телефон",
           "password": "Пароль"
         }

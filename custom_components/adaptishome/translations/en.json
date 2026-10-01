@@ -2,10 +2,9 @@
   "config": {
     "step": {
       "user": {
-        "title": "AdaptisHome hub",
-        "description": "Hub address is the one your AdaptisHome panel opens at (given by Adaptis); login and password are the same as in the panel.",
+        "title": "AdaptisHome",
+        "description": "Same login and password as in the AdaptisHome panel.",
         "data": {
-          "hub": "Hub address",
           "username": "E-mail or phone",
           "password": "Password"
         }

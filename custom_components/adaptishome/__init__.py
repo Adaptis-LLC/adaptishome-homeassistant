@@ -13,7 +13,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.typing import ConfigType
 
 from .api import AdaptisHomeApi, AuthError, HubError
-from .const import CARD_URL, CONF_HUB, CONF_OBJECTS, DOMAIN, VERSION
+from .const import CARD_URL, CONF_HUB, CONF_OBJECTS, DOMAIN, HUB, VERSION
 from .coordinator import AdaptisHomeCoordinator
 
 _LOGGER = logging.getLogger(__name__)
@@ -47,7 +47,7 @@ async def _register_card(hass: HomeAssistant) -> None:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: AdaptisHomeEntry) -> bool:
-    api = AdaptisHomeApi(async_get_clientsession(hass), entry.data[CONF_HUB], entry.data[CONF_USERNAME], entry.data[CONF_PASSWORD])
+    api = AdaptisHomeApi(async_get_clientsession(hass), entry.data.get(CONF_HUB) or HUB, entry.data[CONF_USERNAME], entry.data[CONF_PASSWORD])
     try:
         await api.login()
     except AuthError as e:
