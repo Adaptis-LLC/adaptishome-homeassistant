@@ -1,0 +1,135 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Хаб AdaptisHome",
+        "description": "Адреса хаба — та, за якою відкривається панель AdaptisHome (її дає Adaptis); логін і пароль ті самі, що в панелі.",
+        "data": {
+          "hub": "Адреса хаба",
+          "username": "Пошта або телефон",
+          "password": "Пароль"
+        }
+      },
+      "objects": {
+        "title": "Які обʼєкти показувати",
+        "data": {
+          "objects": "Обʼєкти"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Увійти знову",
+        "description": "Пароль для {login} змінився або сесію закрито.",
+        "data": {
+          "password": "Пароль"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Невірний логін або пароль",
+      "cannot_connect": "Немає звʼязку з хабом"
+    },
+    "abort": {
+      "already_configured": "Цей обліковий запис уже додано",
+      "no_objects": "У цього користувача немає обʼєктів",
+      "reauth_successful": "Вхід оновлено"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Які обʼєкти показувати",
+        "data": {
+          "objects": "Обʼєкти"
+        }
+      }
+    },
+    "abort": {
+      "cannot_connect": "Немає звʼязку з хабом"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "status": {
+        "name": "Стан",
+        "state": {
+          "ok": "На звʼязку",
+          "failover": "На резерві",
+          "offline": "Не на звʼязку",
+          "new": "Чекає підключення"
+        }
+      },
+      "active": {
+        "name": "Активний канал"
+      },
+      "rtt": {
+        "name": "Затримка"
+      },
+      "rx": {
+        "name": "Прийом"
+      },
+      "tx": {
+        "name": "Передача"
+      },
+      "traffic_today": {
+        "name": "Трафік сьогодні"
+      },
+      "uptime30": {
+        "name": "Інтернет за 30 днів"
+      },
+      "saves30": {
+        "name": "Спрацювань резерву за 30 днів"
+      },
+      "device_uptime": {
+        "name": "Пристрій працює"
+      },
+      "channel_state": {
+        "name": "{channel} · стан",
+        "state": {
+          "active": "Активний",
+          "ready": "Готовий",
+          "waiting": "Очікує",
+          "down": "Не готовий",
+          "disabled": "Вимкнено"
+        }
+      },
+      "channel_rtt": {
+        "name": "{channel} · затримка"
+      },
+      "channel_loss": {
+        "name": "{channel} · втрати"
+      },
+      "channel_month": {
+        "name": "{channel} · трафік за місяць"
+      },
+      "channel_rsrp": {
+        "name": "{channel} · сигнал"
+      }
+    },
+    "binary_sensor": {
+      "online": {
+        "name": "На звʼязку"
+      },
+      "failover": {
+        "name": "Інтернет через резерв"
+      },
+      "channel_ready": {
+        "name": "{channel}"
+      }
+    },
+    "event": {
+      "event": {
+        "name": "Подія",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "failover": "Перемикання на резерв",
+              "return": "Повернення на основний",
+              "boot": "Перезавантаження",
+              "config": "Нова конфігурація"
+            }
+          }
+        }
+      }
+    }
+  }
+}

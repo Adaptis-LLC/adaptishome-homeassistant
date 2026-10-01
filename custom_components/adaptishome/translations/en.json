@@ -1,0 +1,135 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "AdaptisHome hub",
+        "description": "Hub address is the one your AdaptisHome panel opens at (given by Adaptis); login and password are the same as in the panel.",
+        "data": {
+          "hub": "Hub address",
+          "username": "E-mail or phone",
+          "password": "Password"
+        }
+      },
+      "objects": {
+        "title": "Objects to show",
+        "data": {
+          "objects": "Objects"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sign in again",
+        "description": "The password for {login} changed or the session was closed.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Wrong login or password",
+      "cannot_connect": "Cannot reach the hub"
+    },
+    "abort": {
+      "already_configured": "This account is already configured",
+      "no_objects": "This user has no objects",
+      "reauth_successful": "Re-authentication successful"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Objects to show",
+        "data": {
+          "objects": "Objects"
+        }
+      }
+    },
+    "abort": {
+      "cannot_connect": "Cannot reach the hub"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "status": {
+        "name": "Status",
+        "state": {
+          "ok": "Online",
+          "failover": "On backup",
+          "offline": "Offline",
+          "new": "Waiting for device"
+        }
+      },
+      "active": {
+        "name": "Active channel"
+      },
+      "rtt": {
+        "name": "Latency"
+      },
+      "rx": {
+        "name": "Download"
+      },
+      "tx": {
+        "name": "Upload"
+      },
+      "traffic_today": {
+        "name": "Traffic today"
+      },
+      "uptime30": {
+        "name": "Internet uptime, 30 days"
+      },
+      "saves30": {
+        "name": "Failovers, 30 days"
+      },
+      "device_uptime": {
+        "name": "Device uptime"
+      },
+      "channel_state": {
+        "name": "{channel} · state",
+        "state": {
+          "active": "Active",
+          "ready": "Ready",
+          "waiting": "Waiting",
+          "down": "Down",
+          "disabled": "Disabled"
+        }
+      },
+      "channel_rtt": {
+        "name": "{channel} · latency"
+      },
+      "channel_loss": {
+        "name": "{channel} · packet loss"
+      },
+      "channel_month": {
+        "name": "{channel} · traffic this month"
+      },
+      "channel_rsrp": {
+        "name": "{channel} · signal"
+      }
+    },
+    "binary_sensor": {
+      "online": {
+        "name": "Online"
+      },
+      "failover": {
+        "name": "Internet via backup"
+      },
+      "channel_ready": {
+        "name": "{channel}"
+      }
+    },
+    "event": {
+      "event": {
+        "name": "Event",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "failover": "Failover",
+              "return": "Return to primary",
+              "boot": "Reboot",
+              "config": "New configuration"
+            }
+          }
+        }
+      }
+    }
+  }
+}
