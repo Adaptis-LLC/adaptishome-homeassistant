@@ -2,7 +2,7 @@
 from datetime import timedelta
 
 DOMAIN = "adaptishome"
-VERSION = "0.2.0"                            # = manifest.json; у посиланні на картку, щоб браузер не брав стару з кешу
+VERSION = "0.2.1"                            # = manifest.json; у посиланні на картку, щоб браузер не брав стару з кешу
 CARD_URL = "/adaptishome/adaptishome-card.js"
 CONF_HUB = "hub"
 CONF_OBJECTS = "objects"

@@ -15,6 +15,8 @@
    **Integration** → Add.
 2. HACS → знайти **AdaptisHome** → Download → перезавантажити Home Assistant.
 
+Потрібен Home Assistant **2026.3 або новіший** (логотип і картка беруться з самої інтеграції).
+
 Без HACS: скопіювати теку `custom_components/adaptishome` з цього репозиторію в `config/custom_components/` на
 Home Assistant і перезавантажити його.
 
