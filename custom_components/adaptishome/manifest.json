@@ -1,10 +1,16 @@
 {
   "domain": "adaptishome",
   "name": "AdaptisHome",
-  "codeowners": ["@RohaDev"],
+  "after_dependencies": [
+    "lovelace"
+  ],
+  "codeowners": [
+    "@RohaDev"
+  ],
   "config_flow": true,
-  "dependencies": ["http"],
-  "after_dependencies": ["lovelace"],
+  "dependencies": [
+    "http"
+  ],
   "documentation": "https://github.com/RohaDev/adaptishome-homeassistant",
   "integration_type": "hub",
   "iot_class": "cloud_polling",
