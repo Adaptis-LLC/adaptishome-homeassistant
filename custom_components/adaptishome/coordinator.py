@@ -22,7 +22,7 @@ class AdaptisHomeCoordinator(DataUpdateCoordinator[dict[str, dict]]):
         super().__init__(hass, _LOGGER, config_entry=entry, name=DOMAIN, update_interval=SCAN_INTERVAL)
         self.api, self.objects = api, objects
         self._last_event: dict[str, int] = {}     # id об'єкта → час останньої події, яку вже віддали на шину
-        self._hub_checked = 0.0
+        self._hub_checked: float | None = None   # None — ще не перевіряли (перша перевірка одразу)
 
     async def _async_update_data(self) -> dict[str, dict]:
         await self._follow_hub()
@@ -39,7 +39,7 @@ class AdaptisHomeCoordinator(DataUpdateCoordinator[dict[str, dict]]):
 
     async def _follow_hub(self) -> None:
         """Хаб переїхав на іншу назву — запам'ятати нову адресу в налаштуваннях інтеграції (раз на годину питаємо)."""
-        if time.monotonic() - self._hub_checked < HUB_CHECK_S: return
+        if self._hub_checked is not None and time.monotonic() - self._hub_checked < HUB_CHECK_S: return
         self._hub_checked = time.monotonic()
         url = await self.api.hub_url()
         if url and url != self.api.hub:
