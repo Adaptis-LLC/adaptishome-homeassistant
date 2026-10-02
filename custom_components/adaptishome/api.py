@@ -46,6 +46,15 @@ class AdaptisHomeApi:
         except (aiohttp.ClientError, asyncio.TimeoutError) as e:
             raise HubError(f"немає зв'язку з хабом: {e}") from e
 
+    async def hub_url(self) -> str | None:
+        """Актуальна адреса хаба, якщо він переїхав на іншу назву (без входу); None — не відомо чи не https."""
+        try:
+            async with self._s.get(f"{self.hub}/api/hub", timeout=aiohttp.ClientTimeout(total=10)) as r:
+                url = (await r.json()).get("url") if r.status == 200 else None
+        except (aiohttp.ClientError, asyncio.TimeoutError, ValueError):
+            return None
+        return url.rstrip("/") if isinstance(url, str) and url.startswith("https://") else None
+
     async def devices(self) -> list[dict]:
         """Об'єкти користувача: [{id, name, status, demo, access}]."""
         return await self.get("/api/devices")

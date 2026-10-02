@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import time
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -9,7 +10,7 @@ from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import AdaptisHomeApi, AuthError, HubError
-from .const import DOMAIN, EVENT, SCAN_INTERVAL
+from .const import CONF_HUB, DOMAIN, EVENT, HUB_CHECK_S, SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,8 +22,10 @@ class AdaptisHomeCoordinator(DataUpdateCoordinator[dict[str, dict]]):
         super().__init__(hass, _LOGGER, config_entry=entry, name=DOMAIN, update_interval=SCAN_INTERVAL)
         self.api, self.objects = api, objects
         self._last_event: dict[str, int] = {}     # id об'єкта → час останньої події, яку вже віддали на шину
+        self._hub_checked = 0.0
 
     async def _async_update_data(self) -> dict[str, dict]:
+        await self._follow_hub()
         out = {}
         for dev_id in self.objects:
             try:
@@ -33,6 +36,16 @@ class AdaptisHomeCoordinator(DataUpdateCoordinator[dict[str, dict]]):
                 raise UpdateFailed(str(e)) from e
             self._fire_new_events(dev_id, out[dev_id])
         return out
+
+    async def _follow_hub(self) -> None:
+        """Хаб переїхав на іншу назву — запам'ятати нову адресу в налаштуваннях інтеграції (раз на годину питаємо)."""
+        if time.monotonic() - self._hub_checked < HUB_CHECK_S: return
+        self._hub_checked = time.monotonic()
+        url = await self.api.hub_url()
+        if url and url != self.api.hub:
+            _LOGGER.info("Хаб AdaptisHome переїхав: %s → %s", self.api.hub, url)
+            self.api.hub = url
+            self.hass.config_entries.async_update_entry(self.config_entry, data={**self.config_entry.data, CONF_HUB: url})
 
     def _fire_new_events(self, dev_id: str, snap: dict) -> None:
         events = snap.get("events") or []

@@ -24,7 +24,8 @@ SNAP = {
 }
 
 
-def mock_hub(aioclient_mock, snap=SNAP, login_status=200):
+def mock_hub(aioclient_mock, snap=SNAP, login_status=200, hub_url=None):
+    aioclient_mock.get(f"{HUB}/api/hub", json={"url": hub_url})
     aioclient_mock.post(f"{HUB}/api/login", status=login_status, json={"token": "t0k", "name": "Олена", "role": "client"})
     aioclient_mock.get(f"{HUB}/api/devices", json=[{"id": snap["id"], "name": snap["name"], "status": snap["status"], "demo": False, "access": "manage"}])
     aioclient_mock.get(f"{HUB}/api/device?id={snap['id']}", json=snap)
@@ -93,6 +94,20 @@ async def test_new_event_on_bus_and_event_entity(hass: HomeAssistant, aioclient_
     assert ev.attributes["event_type"] == "return" and ev.attributes["to"] == "Провайдер 1"
     # перше опитування старих подій не переказує: лише одна подія на шині
     assert len(seen) == 1
+
+
+async def test_follows_moved_hub(hass: HomeAssistant, aioclient_mock) -> None:
+    # хаб віддає нову адресу — інтеграція запам'ятовує її і далі ходить туди
+    new = "https://home.adaptis.example"
+    aioclient_mock.get(f"{HUB}/api/hub", json={"url": new + "/"})
+    aioclient_mock.post(f"{HUB}/api/login", json={"token": "t0k", "name": "Олена", "role": "client"})
+    aioclient_mock.get(f"{new}/api/device?id={SNAP['id']}", json=SNAP)
+    entry = MockConfigEntry(domain=DOMAIN, data={"username": "olena@x", "password": "pw", "name": "Олена"}, options={CONF_OBJECTS: [SNAP["id"]]})
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+    assert entry.data["hub"] == new
+    assert hass.states.get("sensor.budinok_test_status").state == "failover"   # дані вже з нової адреси
 
 
 async def test_card_resource_registered(hass: HomeAssistant, aioclient_mock, hass_client) -> None:

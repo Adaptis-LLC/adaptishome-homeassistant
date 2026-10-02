@@ -45,7 +45,7 @@ class HaComponentTest(unittest.TestCase):
         self.assertIn("/adaptishome/adaptishome-card.js", src("const.py"))
 
     def test_api_uses_only_documented_endpoints(self):
-        self.assertEqual(set(re.findall(r'/api/[a-z_/]+', src("api.py"))), {"/api/login", "/api/devices", "/api/device"})
+        self.assertEqual(set(re.findall(r'/api/[a-z_/]+', src("api.py"))), {"/api/login", "/api/devices", "/api/device", "/api/hub"})
 
 
 if __name__ == "__main__":
