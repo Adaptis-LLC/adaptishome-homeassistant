@@ -4,12 +4,12 @@
    сама через пристрій, до якого належить ця сутність. Інтеграція реєструє файл як ресурс Lovelace сама. */
 const T = {
   uk: {ok: 'На звʼязку', failover: 'На резерві', offline: 'Не на звʼязку', new: 'Чекає підключення', unavailable: 'Немає даних',
-       active: 'Активний', ready: 'Готовий', waiting: 'Очікує', down: 'Не готовий', disabled: 'Вимкнено',
+       active: 'Активний', ready: 'Готовий', waiting: 'Очікує', down: 'Не готовий', disabled: 'Вимкнено', unplugged: 'Не підключено', recovering: 'Перевіряється',
        via: 'Інтернет через', day: 'за добу', uptime: 'Інтернет за 30 днів', saves: 'спрацювань резерву',
        ev_failover: 'Перемикання на', ev_return: 'Повернення на', ev_boot: 'Перезавантаження', ev_config: 'Нова конфігурація',
        noevents: 'Подій ще не було', pick: 'Оберіть сутність «Стан» обʼєкта AdaptisHome'},
   en: {ok: 'Online', failover: 'On backup', offline: 'Offline', new: 'Waiting for device', unavailable: 'No data',
-       active: 'Active', ready: 'Ready', waiting: 'Waiting', down: 'Down', disabled: 'Disabled',
+       active: 'Active', ready: 'Ready', waiting: 'Waiting', down: 'Down', disabled: 'Disabled', unplugged: 'Not connected', recovering: 'Recovering',
        via: 'Internet via', day: 'last 24 h', uptime: 'Internet uptime, 30 days', saves: 'failovers',
        ev_failover: 'Failover to', ev_return: 'Back to', ev_boot: 'Reboot', ev_config: 'New configuration',
        noevents: 'No events yet', pick: 'Pick the AdaptisHome «Status» entity'},
@@ -18,7 +18,8 @@ const ICON = {fiber: 'mdi:ethernet', cable: 'mdi:ethernet', dish: 'mdi:satellite
 const COLOR = {ok: 'var(--success-color, #2e7d32)', failover: 'var(--warning-color, #ef6c00)', offline: 'var(--error-color, #c62828)',
                new: 'var(--secondary-text-color)', unavailable: 'var(--secondary-text-color)'};
 const CH_COLOR = {active: 'var(--success-color, #2e7d32)', ready: 'var(--info-color, #1f6fe0)', waiting: 'var(--warning-color, #ef6c00)',
-                  down: 'var(--error-color, #c62828)', disabled: 'var(--disabled-text-color, #9e9e9e)'};
+                  down: 'var(--error-color, #c62828)', disabled: 'var(--disabled-text-color, #9e9e9e)',
+                  unplugged: 'var(--disabled-text-color, #9e9e9e)', recovering: 'var(--warning-color, #ef6c00)'};
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
 
 class AdaptisHomeCard extends HTMLElement {

@@ -14,7 +14,8 @@ from . import AdaptisHomeEntry
 from .entity import AdaptisHomeChannelEntity, AdaptisHomeEntity
 
 STATUSES = ["ok", "failover", "offline", "new"]
-CH_STATES = ["active", "ready", "waiting", "down", "disabled"]
+# «unplugged» — до порту нічого не підключено; «recovering» — після короткого збою знову відповідає (хаб з 02.10.2026)
+CH_STATES = ["active", "ready", "waiting", "down", "disabled", "unplugged", "recovering"]
 
 
 @dataclass(frozen=True, kw_only=True)

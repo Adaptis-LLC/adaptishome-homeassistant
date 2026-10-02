@@ -88,7 +88,9 @@
           "ready": "Готовий",
           "waiting": "Очікує",
           "down": "Не готовий",
-          "disabled": "Вимкнено"
+          "disabled": "Вимкнено",
+          "unplugged": "Не підключено",
+          "recovering": "Перевіряється"
         }
       },
       "channel_rtt": {
