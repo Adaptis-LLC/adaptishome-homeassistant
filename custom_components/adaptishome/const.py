@@ -2,9 +2,9 @@
 from datetime import timedelta
 
 DOMAIN = "adaptishome"
-VERSION = "0.2.5"                            # = manifest.json; у посиланні на картку, щоб браузер не брав стару з кешу
+VERSION = "0.2.6"                            # = manifest.json; у посиланні на картку, щоб браузер не брав стару з кешу
 CARD_URL = "/adaptishome/adaptishome-card.js"
-HUB = "https://adaptishome.roha999.com"       # хаб Adaptis: клієнт вводить лише логін і пароль з панелі
+HUB = "https://home.adaptis.digital"       # хаб Adaptis: клієнт вводить лише логін і пароль з панелі
 CONF_HUB = "hub"
 CONF_OBJECTS = "objects"
 SCAN_INTERVAL = timedelta(seconds=30)
