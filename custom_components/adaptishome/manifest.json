@@ -11,10 +11,10 @@
   "dependencies": [
     "http"
   ],
-  "documentation": "https://github.com/RohaDev/adaptishome-homeassistant",
+  "documentation": "https://github.com/Adaptis-LLC/adaptishome-homeassistant",
   "integration_type": "hub",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/RohaDev/adaptishome-homeassistant/issues",
+  "issue_tracker": "https://github.com/Adaptis-LLC/adaptishome-homeassistant/issues",
   "requirements": [],
-  "version": "0.2.2"
+  "version": "0.2.3"
 }

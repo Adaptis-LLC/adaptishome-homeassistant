@@ -11,7 +11,7 @@
 
 Через HACS (найпростіше, оновлення теж через нього):
 
-1. HACS → три крапки праворуч угорі → **Custom repositories** → `https://github.com/RohaDev/adaptishome-homeassistant`, тип
+1. HACS → три крапки праворуч угорі → **Custom repositories** → `https://github.com/Adaptis-LLC/adaptishome-homeassistant`, тип
    **Integration** → Add.
 2. HACS → знайти **AdaptisHome** → Download → перезавантажити Home Assistant.
 
@@ -90,5 +90,5 @@ actions:
 Home Assistant integration for **AdaptisHome** — Adaptis' multi-WAN internet failover box (MikroTik between up to four
 internet links and the customer's router). It reads object state from the AdaptisHome hub with the same login as the
 panel: status, active channel, latency, traffic, 30-day statistics, per-channel state, and events (failover, return,
-reboot, config). Install via HACS as a custom repository (`https://github.com/RohaDev/adaptishome-homeassistant`,
+reboot, config). Install via HACS as a custom repository (`https://github.com/Adaptis-LLC/adaptishome-homeassistant`,
 type Integration), then add the **AdaptisHome** integration. Read-only, cloud polling every 30 s.
